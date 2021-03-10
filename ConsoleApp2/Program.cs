@@ -19,10 +19,7 @@ namespace ConsoleApp2
 
             var workWithTextType = typeof(WorkWithText);
 
-                        var methods = workWithTextType.GetMethods(BindingFlags.Instance
-                    | BindingFlags.Static
-                    | BindingFlags.Public
-                    | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+                        var methods = workWithTextType.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
             object[] argsFor = new object[1];
             argsFor[0] = allText;
