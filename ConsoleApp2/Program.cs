@@ -15,11 +15,13 @@ namespace ConsoleApp2
 
         static void Main(string[] args)
         {
+            
+            string allText = File.ReadAllText("E:\\text.txt");
+            
+            //Однопоточный режим
             long freq = Stopwatch.Frequency;
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            string allText = File.ReadAllText("E:\\text.txt");
-
             var workWithText = new WorkWithText();
 
             var workWithTextType = typeof(WorkWithText);
@@ -37,10 +39,6 @@ namespace ConsoleApp2
                 }
             }
      
-           
-            
-
-            //Dictionary<string, int> wordList = workWithText.GetDictionaryOnThread(allText);
                 using (FileStream fs = new FileStream("E:\\textResalt.txt", FileMode.OpenOrCreate))
                 {
                     using (TextWriter tw = new StreamWriter(fs))
@@ -52,8 +50,30 @@ namespace ConsoleApp2
                 }
             stopwatch.Stop();
             double sec = (double)stopwatch.ElapsedTicks / freq;
-            Console.WriteLine(sec);
-            Console.ReadLine();              
+            Console.WriteLine("Однопоточный режим - " + sec);
+
+            //Многопоточный режим
+            long freq1 = Stopwatch.Frequency;
+            Stopwatch stopwatch1 = new Stopwatch();
+            stopwatch1.Start();
+
+            var workWithText1 = new WorkWithText();
+
+            Dictionary<string, int> wordList1 = workWithText1.GetDictionaryOnThread(allText);
+            using (FileStream fs = new FileStream("E:\\textResalt1.txt", FileMode.OpenOrCreate))
+            {
+                using (TextWriter tw = new StreamWriter(fs))
+
+                    foreach (KeyValuePair<string, int> kvp in wordList)
+                    {
+                        tw.WriteLine(string.Format("{0};{1}", kvp.Key, kvp.Value));
+                    }
+            }
+            stopwatch1.Stop();
+            double sec1 = (double)stopwatch1.ElapsedTicks / freq1;
+            Console.WriteLine("Многопоточный режим - " + sec1);
+
+            Console.ReadLine();
             }
             
     }
